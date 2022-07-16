@@ -8,11 +8,11 @@ from pydriller.domain.commit import ModificationType
 import xlsxwriter as xw
 import argparse
 
-parser= argparse.ArgumentParser(description='git_parser commit from GitHub')
+parser= argparse.ArgumentParser(description='Parser commit from any repository path')
 parser.add_argument('-o','--output_file', type=str,metavar='',required=True,
-                    help='Path on the computer to same created Excel file')
+                    help='Set a local computer path to create an Excel file')
 parser.add_argument('-r','--repository', type=str,metavar='',required=True,
-                    help='Path on the repository I want the script to pase')
+                    help='Set the repository path you want to parse it')
 args=parser.parse_args()
 
 
@@ -20,11 +20,8 @@ args=parser.parse_args()
 
 def show_commit(output_file,repository):
 
-    wb = xw.Workbook(output_file+"\outputExcel_file.xlsx")
+    wb = xw.Workbook(output_file + "\outputExcel_file.xlsx")
     ws = wb.add_worksheet(name="parser_git_commit")
-
-    firstDay = datetime(2022, 5, 1)
-    toDay = datetime.now()
 
     bold = wb.add_format({'bold': True})
     italic = wb.add_format(dict(italic=True))
@@ -39,7 +36,7 @@ def show_commit(output_file,repository):
 
     Row_number += 1
 
-    for commit in Repository(path_to_repo=repository, since=firstDay, to=toDay).traverse_commits():
+    for commit in Repository(path_to_repo=repository).traverse_commits():
         for modified_file in commit.modified_files:
             ws.write(Row_number, Col_number, modified_file.filename, italic)
             ws.write(Row_number, Col_number + 1, commit.msg)
