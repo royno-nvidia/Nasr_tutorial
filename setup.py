@@ -21,6 +21,6 @@ setup(
     author='nasrsaab',
     author_email='nasr.saab@gmail.com',
     description='git commit from the web sit and show it in the command line',
-    py_modules=['parser_module'],
+    py_modules=['git_parser'],
 
 )
