@@ -1,19 +1,15 @@
-from setuptools import setup, find_packages
 import setuptools
+from setuptools import setup
 
 setup(
-    name='Git_parser_v3',
-    version='3.0.0',
-    packages=find_packages(),
-    install_requires=[
-        'pydriller',
-        'xlsxwriter',
-        'argparse',
-        'datetime'
-    ],
+    name='pythonProject4',
+    version='1.0.0',
+    packages=setuptools.find_packages(),
     url='https://github.com/nasr-saab/Nasr_tutorial',
     license='',
     author='nasr saab',
     author_email='nsaab@nvidia.com',
-    description='git parser project'
+    description='Write all the commits in Excel file',
+    python_requre='>=3',
+    py_modules=['parser_module']
 )

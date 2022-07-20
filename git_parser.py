@@ -6,8 +6,7 @@ from datetime import date, timedelta,datetime
 from pydriller import Repository
 from pydriller.domain.commit import ModificationType
 import xlsxwriter as xw
-
-
+import pandas as pd
 
 
 
@@ -16,11 +15,13 @@ def show_commit(args):
     #Create a output file
     if args.output_file:
         #Choose a new local path
-        wb = xw.Workbook(args.output_file +"\outputExcel_file.xlsx")
+        Outputdata = args.output_file +"\outputExcel_file.xlsx"
+        wb = xw.Workbook(Outputdata)
         print("\nExcel file created in: " + args.output_file + "\outputExcel_file.xlsx")
     else:
         #Set in a same arg_parser.py path
-        wb = xw.Workbook("outputExcel_file.xlsx")
+        Outputdata = "outputExcel_file.xlsx"
+        wb = xw.Workbook(Outputdata)
         print("\nExcel file created in: local_python_file_path\outputExcel_file.xlsx")
 
     #Set worksheet name
@@ -53,24 +54,35 @@ def show_commit(args):
     ws.write(Row_number, Col_number + 2, 'Commit Date', bold)
     ws.write(Row_number, Col_number + 3, 'File Name', bold)
 
-    Row_number += 1
-    hash_commit = "xxxx"
-    Col_n = 3
+    hash_commit = 'xxxx'
 
     for commit in Repository(path_to_repo=args.repository, since=first_day, to=to_day).traverse_commits():
         for modified_file in commit.modified_files:
-            ws.write(Row_number, Col_number, commit.hash[:12])
-            ws.write(Row_number, Col_number + 1, commit.msg)
-            ws.write(Row_number, Col_number + 2, str(commit.author_date))
-            ws.write(Row_number, Col_number + 3, modified_file.filename, italic)
 
             if hash_commit in commit.hash[:12]:
                 Col_n = Col_n + 1
                 ws.write(Row_number, Col_number + Col_n, modified_file.filename, italic)
             else:
-                hash_commit = commit.hash[:12]
+                Col_n = 3
                 Row_number += 1
+                hash_commit = commit.hash[:12]
+                ws.write(Row_number, Col_number, commit.hash[:12])
+                ws.write(Row_number, Col_number + 1, commit.msg)
+                ws.write(Row_number, Col_number + 2, str(commit.author_date))
+                ws.write(Row_number, Col_number + 3, modified_file.filename, italic)
+
+
+
 
     wb.close()
     print("finish...")
+
+    # load data into a DataFrame object:
+    df = pd.DataFrame(pd.read_excel(Outputdata))
+
+    print(df)
+
+
+
+
 
