@@ -31,19 +31,17 @@ def show_commit(args):
     bold = wb.add_format({'bold': True})
     italic = wb.add_format(dict(italic=True))
 
-    # Calculate date
-    to_day = datetime.now().today()
-
     if args.show_lats_days:
         # The user defined to show only commits from the last 'X' days through the flag (-d)
+        to_day = datetime.now().today()
         first_day = to_day - timedelta(days=args.show_lats_days)
         print(first_day)
         print(to_day)
 
     else:
         # Show all the commits
-        first_day = datetime.min
-        print(to_day)
+        first_day = None
+        to_day = None
 
 
     print("Please wait...")
@@ -56,27 +54,21 @@ def show_commit(args):
     ws.write(Row_number, Col_number + 2, 'Commit Date', bold)
     ws.write(Row_number, Col_number + 3, 'File Name', bold)
 
-    hash_commit = 'xxxx'
+
 
     for commit in Repository(path_to_repo=args.repository, since=first_day, to=to_day).traverse_commits():
-        for modified_file in commit.modified_files:
-
-            if hash_commit in commit.hash[:12]:
-                # If the same hash commit have more than one file
-                # Set the files in the same Excel file column
-                mylist = mylist + ', ' + modified_file.filename
-                ws.write(Row_number, Col_number + 3, mylist, italic)
-
-            else:
-                mylist = ""
                 Row_number += 1
-                hash_commit = commit.hash[:12]
+
                 ws.write(Row_number, Col_number, commit.hash[:12])
                 ws.write(Row_number, Col_number + 1, commit.msg)
                 ws.write(Row_number, Col_number + 2, str(commit.author_date))
-                mylist += modified_file.filename
-                ws.write(Row_number, Col_number + 3, mylist, italic)
 
+                mylist = " "
+
+                for modified_file in commit.modified_files:
+                    mylist = mylist + '  ' + modified_file.filename
+
+                ws.write(Row_number, Col_number + 3, mylist, italic)
 
     wb.close()
     print("finish...")
