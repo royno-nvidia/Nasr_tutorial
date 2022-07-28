@@ -1,21 +1,19 @@
 import git_parser
-# importing pandas module...to create a data frame
+import argparse
 
-import pandas as pd
+# Create the parser
+parser = argparse.ArgumentParser(description='Parser commit from any repository path')
 
-'''
-module for git commit file
-'''
+# Add Arguments
+parser.add_argument('-o', '--output_file', type=str, default=False,
+                    help='Set a local computer path to create an Excel file')
+parser.add_argument('-r', '--repository', type=str, metavar='', required=True,
+                    help='Set the repository path you want to parse it')
+parser.add_argument('-d', '--show_lats_days', type=int, default=False,
+                    help='show me only commits from the last \'X\' days.if not provided -'
+                         ' show all commits In the repository.')
+# Parse the argument
+args = parser.parse_args()
 
 
-url = input("Please enter your URL: ").strip()
-git_parser.show_commit(url)
-# https://github.com/nasrsaab/Our_Project.git
-# https://github.com/nasrsaab/Git_course.git
-
-
-'''open the xlsx file and put the data in dataframe '''
-df_dataframe = pd.read_excel('Excel_File1.xlsx')
-
-# print the dataframe
-print(df_dataframe)
+git_parser.show_commit(args)

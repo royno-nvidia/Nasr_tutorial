@@ -1,26 +1,26 @@
 import setuptools
-from setuptools import setup, find_packages
-# read the contents of your README file
-# from os import path
-# this_directory = path.abspath (path.dirname (__file__))
-# with open (path.join (this_directory , 'README. md'), encoding ='utf-8') as f:
-#     long_description = f.read
-
+from setuptools import setup
+requires_modules = [
+        'argparse',
+        'pydriller',
+        'xlsxwriter',
+        'datetime',
+        'pandas>=1.4.3',
+        'xlrd>=1.2.0',
+        'openpyxl>=3.0.7'
+        ]
 
 setup(
-    name='myPythonProject',
+    name='Commit Parser',
     version='1.0.0',
-    packages=find_packages(),
-    install_requires=[
-        'pydriller',
-        'xlsxwriter'
-    ],
-    python_requires='>=3.10.5',
-    url='https://github.com/nasr-saab/Nasr_tutorial/new/main',
+    install_requires=requires_modules,
+    packages=setuptools.find_packages(),
+    url='https://github.com/nasr-saab/Nasr_tutorial',
     license='',
-    author='nasrsaab',
-    author_email='nasr.saab@gmail.com',
-    description='git commit from the web sit and show it in the command line',
-    py_modules=['parser_module'],
-
+    author='Nasr Saab',
+    author_email='nsaab@nvidia.com',
+    description='This python script take all the commits from any Repo that found in any place'
+                'locally or remotely and order them in Excel file',
+    python_requre='>=3',
+    py_modules=['parser_module']
 )
