@@ -62,13 +62,7 @@ def show_commit(args):
                 ws.write(Row_number, Col_number, commit.hash[:12])
                 ws.write(Row_number, Col_number + 1, commit.msg)
                 ws.write(Row_number, Col_number + 2, str(commit.author_date))
-
-                mylist = " "
-
-                for modified_file in commit.modified_files:
-                    mylist = mylist + '  ' + modified_file.filename
-
-                ws.write(Row_number, Col_number + 3, mylist, italic)
+                ws.write(Row_number, Col_number + 3, ','.join([mf.filename for mf in commit.modified_files]), italic)
 
     wb.close()
     print("finish...")
